@@ -8,16 +8,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import type { UserData } from "@/types/user";
 import { statesList, nationalityList, streamsList } from "@/utils/constants";
-import { ChevronRight, ChevronLeft } from "lucide-react";
 
 type Props = {
   onSubmit: (data: UserData) => void;
 };
 
 const UserForm = ({ onSubmit }: Props) => {
-  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<Partial<UserData>>({
-    education: {},
+    education: {
+      level: "high_school",
+      yearOrSemester: 1
+    },
+    isPWD: false
   });
 
   const updateForm = (key: string, value: any) => {
@@ -29,20 +31,17 @@ const UserForm = ({ onSubmit }: Props) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (step < 3) {
-      setStep((s) => s + 1);
-      return;
-    }
     onSubmit(formData as UserData);
   };
 
   return (
-    <Card className="glass-card max-w-2xl mx-auto p-6">
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {step === 1 && (
-          <div className="form-step space-y-4">
-            <h2 className="text-xl font-semibold mb-4">Personal Details</h2>
-            
+    <Card className="glass-card max-w-3xl mx-auto p-6">
+      <form onSubmit={handleSubmit} className="space-y-8">
+        {/* Personal Details Section */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold border-b pb-2">Personal Details</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="dateOfBirth">Date of Birth</Label>
               <Input
@@ -86,21 +85,24 @@ const UserForm = ({ onSubmit }: Props) => {
             <div className="flex items-center space-x-2">
               <Switch
                 id="isPWD"
+                checked={formData.isPWD}
                 onCheckedChange={(checked) => updateForm("isPWD", checked)}
               />
               <Label htmlFor="isPWD">Person with Disability (PWD)</Label>
             </div>
           </div>
-        )}
+        </div>
 
-        {step === 2 && (
-          <div className="form-step space-y-4">
-            <h2 className="text-xl font-semibold mb-4">Education & Status</h2>
-            
+        {/* Education & Status Section */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold border-b pb-2">Education & Status</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="education.level">Education Level</Label>
               <Select
                 required
+                value={formData.education?.level}
                 onValueChange={(value) => updateForm("education", { ...formData.education, level: value })}
               >
                 <SelectTrigger>
@@ -119,6 +121,7 @@ const UserForm = ({ onSubmit }: Props) => {
                 <Label htmlFor="education.stream">Stream</Label>
                 <Select
                   required
+                  value={formData.education?.stream}
                   onValueChange={(value) => updateForm("education", { ...formData.education, stream: value })}
                 >
                   <SelectTrigger>
@@ -142,6 +145,7 @@ const UserForm = ({ onSubmit }: Props) => {
                 min="1"
                 max="8"
                 required
+                value={formData.education?.yearOrSemester}
                 onChange={(e) => updateForm("education", { ...formData.education, yearOrSemester: parseInt(e.target.value) })}
               />
             </div>
@@ -161,12 +165,13 @@ const UserForm = ({ onSubmit }: Props) => {
               </Select>
             </div>
           </div>
-        )}
+        </div>
 
-        {step === 3 && (
-          <div className="form-step space-y-4">
-            <h2 className="text-xl font-semibold mb-4">Location & Preferences</h2>
-            
+        {/* Location & Preferences Section */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold border-b pb-2">Location & Preferences</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="domicileState">Domicile State</Label>
               <Select required onValueChange={(value) => updateForm("domicileState", value)}>
@@ -199,7 +204,7 @@ const UserForm = ({ onSubmit }: Props) => {
               </Select>
             </div>
 
-            <div>
+            <div className="md:col-span-2">
               <Label htmlFor="sectorPreference">Sector Preference</Label>
               <Select required onValueChange={(value) => updateForm("sectorPreference", value)}>
                 <SelectTrigger>
@@ -218,32 +223,14 @@ const UserForm = ({ onSubmit }: Props) => {
               </Select>
             </div>
           </div>
-        )}
-
-        <div className="flex justify-between pt-4">
-          {step > 1 && (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setStep((s) => s - 1)}
-              className="flex items-center"
-            >
-              <ChevronLeft className="mr-1 h-4 w-4" /> Previous
-            </Button>
-          )}
-          <Button
-            type="submit"
-            className="ml-auto flex items-center"
-          >
-            {step < 3 ? (
-              <>
-                Next <ChevronRight className="ml-1 h-4 w-4" />
-              </>
-            ) : (
-              "Check Eligibility"
-            )}
-          </Button>
         </div>
+
+        <Button
+          type="submit"
+          className="w-full"
+        >
+          Check Eligibility
+        </Button>
       </form>
     </Card>
   );
