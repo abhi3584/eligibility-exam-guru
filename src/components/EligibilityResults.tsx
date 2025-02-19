@@ -1,11 +1,10 @@
-
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { examData } from "@/utils/constants";
 import type { UserData } from "@/types/user";
 import { differenceInYears } from "date-fns";
-import { CheckCircle, XCircle, AlertCircle, ArrowLeft } from "lucide-react";
+import { CheckCircle, XCircle, AlertCircle, ArrowLeft, BookOpen, ScrollText } from "lucide-react";
 
 type Props = {
   userData: UserData;
@@ -21,7 +20,6 @@ const EligibilityResults = ({ userData, onReset }: Props) => {
     const age = calculateAge(userData.dateOfBirth);
     let maxAge = exam.ageRange.max;
     
-    // Apply age relaxation if applicable
     if (exam.relaxations?.age) {
       const relaxation = exam.relaxations.age[userData.category as keyof typeof exam.relaxations.age] || 0;
       maxAge += relaxation;
@@ -47,6 +45,10 @@ const EligibilityResults = ({ userData, onReset }: Props) => {
     };
   };
 
+  const handleSyllabusClick = (examId: string) => {
+    console.log(`Show syllabus for exam: ${examId}`);
+  };
+
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="flex items-center justify-between">
@@ -59,7 +61,7 @@ const EligibilityResults = ({ userData, onReset }: Props) => {
           Back to Form
         </Button>
         <Badge variant="outline" className="text-sm">
-          Age: {calculateAge(userData.dateOfBirth)} years
+          🎂 Age: {calculateAge(userData.dateOfBirth)} years
         </Badge>
       </div>
 
@@ -71,16 +73,19 @@ const EligibilityResults = ({ userData, onReset }: Props) => {
             <Card key={exam.id} className="p-6 result-card">
               <div className="flex items-start justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold">{exam.name}</h3>
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    {exam.name}
+                    {eligible ? "✨" : ""}
+                  </h3>
                   <Badge
                     variant={eligible ? "default" : "destructive"}
                     className="mt-2"
                   >
-                    {eligible ? "Eligible" : "Not Eligible"}
+                    {eligible ? "✅ Eligible" : "❌ Not Eligible"}
                   </Badge>
                 </div>
                 {eligible ? (
-                  <CheckCircle className="h-6 w-6 text-success" />
+                  <CheckCircle className="h-6 w-6 text-success animate-bounce" />
                 ) : (
                   <XCircle className="h-6 w-6 text-error" />
                 )}
@@ -123,6 +128,20 @@ const EligibilityResults = ({ userData, onReset }: Props) => {
                 <div className="mt-4 flex items-center text-sm text-muted-foreground">
                   <AlertCircle className="h-4 w-4 mr-2" />
                   Maximum attempts allowed: {exam.attemptLimit}
+                </div>
+              )}
+
+              {eligible && (
+                <div className="mt-6">
+                  <Button
+                    variant="outline"
+                    className="syllabus-button group"
+                    onClick={() => handleSyllabusClick(exam.id)}
+                  >
+                    <BookOpen className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
+                    <span className="mr-2">See Full Details Syllabus</span>
+                    <span className="text-lg">📚</span>
+                  </Button>
                 </div>
               )}
             </Card>
