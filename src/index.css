@@ -1,137 +1,97 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
  
 @layer base {
   :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
     --primary: 262 83.3% 57.8%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 262 83.3% 97.8%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
     --ring: 262 83.3% 57.8%;
-    --success: 142 70.6% 45.3%;
-    --error: 0 84.2% 60.2%;
     --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 262 83.3% 57.8%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 262 83.3% 57.8%;
   }
 }
  
 @layer base {
   * {
-    @apply border-border selection:bg-primary/20;
+    @apply border-border;
   }
-  
   body {
-    @apply bg-background text-foreground antialiased;
-    background: linear-gradient(
-      135deg,
-      hsl(var(--background)) 0%,
-      hsl(262 83.3% 10%) 100%
-    );
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
+    @apply bg-gradient-to-b from-background to-background/80 text-foreground antialiased min-h-screen;
   }
-
   .glass-card {
-    @apply bg-card/40 backdrop-blur-xl border border-white/10 shadow-2xl;
+    @apply bg-card/90 backdrop-blur-xl border border-border/20 shadow-xl dark:bg-card/40;
     animation: card-enter 0.6s ease-out;
   }
-
   .form-section {
     @apply transition-all duration-300 ease-in-out;
     animation: section-enter 0.5s ease-out forwards;
     opacity: 0;
     transform: translateY(10px);
   }
-
+  .form-section:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  .form-section:nth-child(3) {
+    animation-delay: 0.2s;
+  }
   .input-group {
-    @apply relative transition-all duration-200 ease-in-out;
+    @apply transition-all duration-200 ease-in-out hover:scale-[1.02];
   }
-
-  .input-group:hover {
-    @apply transform scale-[1.02];
-  }
-
-  .input-group::after {
-    content: '';
-    @apply absolute inset-0 bg-primary/5 opacity-0 rounded-md transition-opacity duration-300;
-  }
-
-  .input-group:hover::after {
-    @apply opacity-100;
-  }
-
   .section-title {
-    @apply relative inline-block;
+    @apply relative inline-block after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-primary/20 after:bottom-0 after:left-0;
     animation: title-enter 0.6s ease-out forwards;
   }
-
-  .section-title::after {
-    content: '';
-    @apply absolute w-full h-0.5 bg-primary/30 bottom-0 left-0 transform scale-x-0 transition-transform duration-300 origin-left;
-  }
-
-  .section-title:hover::after {
-    @apply scale-x-100;
-  }
-
   .result-card {
     @apply relative overflow-hidden;
     animation: card-enter 0.6s ease-out;
-    background: linear-gradient(
-      45deg,
-      hsl(var(--card)/0.3) 0%,
-      hsl(var(--card)/0.1) 100%
-    );
   }
-
   .result-card::before {
     content: '';
-    @apply absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 transition-opacity duration-300;
+    @apply absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 transition-opacity duration-300;
   }
-
   .result-card:hover::before {
     @apply opacity-100;
   }
-
   .syllabus-button {
-    @apply relative overflow-hidden;
     animation: pulse 2s infinite;
-  }
-
-  .syllabus-button::before {
-    content: '';
-    @apply absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-0 transition-opacity duration-300;
-  }
-
-  .syllabus-button:hover::before {
-    @apply opacity-100;
-  }
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
   }
 }
 
@@ -164,18 +124,6 @@
   }
 }
 
-@keyframes floating {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
-
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -192,30 +140,13 @@
 }
 
 .form-input {
-  @apply bg-background/50 border-white/10 transition-all duration-200;
+  @apply transition-all duration-200;
 }
 
 .form-input:focus {
-  @apply transform scale-[1.02] border-primary/50 ring-primary/20;
+  @apply transform scale-[1.02];
 }
 
 .submit-button {
-  @apply relative overflow-hidden transition-all duration-300;
-}
-
-.submit-button::before {
-  content: '';
-  @apply absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-0 transition-opacity duration-300;
-}
-
-.submit-button:hover {
-  @apply transform scale-105 shadow-lg shadow-primary/20;
-}
-
-.submit-button:hover::before {
-  @apply opacity-100;
-}
-
-.submit-button:active {
-  @apply scale-95;
+  @apply transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95;
 }
