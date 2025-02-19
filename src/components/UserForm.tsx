@@ -35,27 +35,34 @@ const UserForm = ({ onSubmit }: Props) => {
   };
 
   return (
-    <Card className="glass-card max-w-3xl mx-auto p-6">
-      <form onSubmit={handleSubmit} className="space-y-8">
+    <Card className="glass-card max-w-3xl mx-auto p-8">
+      <form onSubmit={handleSubmit} className="space-y-10">
         {/* Personal Details Section */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold border-b pb-2">Personal Details</h2>
+        <div className="form-section space-y-6">
+          <h2 className="section-title text-2xl font-semibold text-primary pb-2">
+            Personal Details
+          </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="dateOfBirth">Date of Birth</Label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="input-group">
+              <Label htmlFor="dateOfBirth" className="text-sm font-medium text-gray-700">
+                Date of Birth
+              </Label>
               <Input
                 id="dateOfBirth"
                 type="date"
                 required
+                className="form-input mt-1"
                 onChange={(e) => updateForm("dateOfBirth", new Date(e.target.value))}
               />
             </div>
 
-            <div>
-              <Label htmlFor="gender">Gender</Label>
+            <div className="input-group">
+              <Label htmlFor="gender" className="text-sm font-medium text-gray-700">
+                Gender
+              </Label>
               <Select required onValueChange={(value) => updateForm("gender", value)}>
-                <SelectTrigger>
+                <SelectTrigger className="form-input mt-1">
                   <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
                 <SelectContent>
@@ -66,10 +73,12 @@ const UserForm = ({ onSubmit }: Props) => {
               </Select>
             </div>
 
-            <div>
-              <Label htmlFor="category">Category</Label>
+            <div className="input-group">
+              <Label htmlFor="category" className="text-sm font-medium text-gray-700">
+                Category
+              </Label>
               <Select required onValueChange={(value) => updateForm("category", value)}>
-                <SelectTrigger>
+                <SelectTrigger className="form-input mt-1">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -82,30 +91,37 @@ const UserForm = ({ onSubmit }: Props) => {
               </Select>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="input-group flex items-center space-x-2">
               <Switch
                 id="isPWD"
                 checked={formData.isPWD}
                 onCheckedChange={(checked) => updateForm("isPWD", checked)}
+                className="data-[state=checked]:bg-primary"
               />
-              <Label htmlFor="isPWD">Person with Disability (PWD)</Label>
+              <Label htmlFor="isPWD" className="text-sm font-medium text-gray-700">
+                Person with Disability (PWD)
+              </Label>
             </div>
           </div>
         </div>
 
         {/* Education & Status Section */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold border-b pb-2">Education & Status</h2>
+        <div className="form-section space-y-6">
+          <h2 className="section-title text-2xl font-semibold text-primary pb-2">
+            Education & Status
+          </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="education.level">Education Level</Label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="input-group">
+              <Label htmlFor="education.level" className="text-sm font-medium text-gray-700">
+                Education Level
+              </Label>
               <Select
                 required
                 value={formData.education?.level}
                 onValueChange={(value) => updateForm("education", { ...formData.education, level: value })}
               >
-                <SelectTrigger>
+                <SelectTrigger className="form-input mt-1">
                   <SelectValue placeholder="Select education level" />
                 </SelectTrigger>
                 <SelectContent>
@@ -117,14 +133,16 @@ const UserForm = ({ onSubmit }: Props) => {
             </div>
 
             {formData.education?.level && formData.education.level !== "high_school" && (
-              <div>
-                <Label htmlFor="education.stream">Stream</Label>
+              <div className="input-group">
+                <Label htmlFor="education.stream" className="text-sm font-medium text-gray-700">
+                  Stream
+                </Label>
                 <Select
                   required
                   value={formData.education?.stream}
                   onValueChange={(value) => updateForm("education", { ...formData.education, stream: value })}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="form-input mt-1">
                     <SelectValue placeholder="Select stream" />
                   </SelectTrigger>
                   <SelectContent>
@@ -138,22 +156,27 @@ const UserForm = ({ onSubmit }: Props) => {
               </div>
             )}
 
-            <div>
-              <Label htmlFor="education.yearOrSemester">Year/Semester</Label>
+            <div className="input-group">
+              <Label htmlFor="education.yearOrSemester" className="text-sm font-medium text-gray-700">
+                Year/Semester
+              </Label>
               <Input
                 type="number"
                 min="1"
                 max="8"
                 required
+                className="form-input mt-1"
                 value={formData.education?.yearOrSemester}
                 onChange={(e) => updateForm("education", { ...formData.education, yearOrSemester: parseInt(e.target.value) })}
               />
             </div>
 
-            <div>
-              <Label htmlFor="maritalStatus">Marital Status</Label>
+            <div className="input-group">
+              <Label htmlFor="maritalStatus" className="text-sm font-medium text-gray-700">
+                Marital Status
+              </Label>
               <Select required onValueChange={(value) => updateForm("maritalStatus", value)}>
-                <SelectTrigger>
+                <SelectTrigger className="form-input mt-1">
                   <SelectValue placeholder="Select marital status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -168,14 +191,18 @@ const UserForm = ({ onSubmit }: Props) => {
         </div>
 
         {/* Location & Preferences Section */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold border-b pb-2">Location & Preferences</h2>
+        <div className="form-section space-y-6">
+          <h2 className="section-title text-2xl font-semibold text-primary pb-2">
+            Location & Preferences
+          </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="domicileState">Domicile State</Label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="input-group">
+              <Label htmlFor="domicileState" className="text-sm font-medium text-gray-700">
+                Domicile State
+              </Label>
               <Select required onValueChange={(value) => updateForm("domicileState", value)}>
-                <SelectTrigger>
+                <SelectTrigger className="form-input mt-1">
                   <SelectValue placeholder="Select state" />
                 </SelectTrigger>
                 <SelectContent>
@@ -188,10 +215,12 @@ const UserForm = ({ onSubmit }: Props) => {
               </Select>
             </div>
 
-            <div>
-              <Label htmlFor="nationality">Nationality</Label>
+            <div className="input-group">
+              <Label htmlFor="nationality" className="text-sm font-medium text-gray-700">
+                Nationality
+              </Label>
               <Select required onValueChange={(value) => updateForm("nationality", value)}>
-                <SelectTrigger>
+                <SelectTrigger className="form-input mt-1">
                   <SelectValue placeholder="Select nationality" />
                 </SelectTrigger>
                 <SelectContent>
@@ -204,10 +233,12 @@ const UserForm = ({ onSubmit }: Props) => {
               </Select>
             </div>
 
-            <div className="md:col-span-2">
-              <Label htmlFor="sectorPreference">Sector Preference</Label>
+            <div className="input-group md:col-span-2">
+              <Label htmlFor="sectorPreference" className="text-sm font-medium text-gray-700">
+                Sector Preference
+              </Label>
               <Select required onValueChange={(value) => updateForm("sectorPreference", value)}>
-                <SelectTrigger>
+                <SelectTrigger className="form-input mt-1">
                   <SelectValue placeholder="Select sector" />
                 </SelectTrigger>
                 <SelectContent>
@@ -227,7 +258,7 @@ const UserForm = ({ onSubmit }: Props) => {
 
         <Button
           type="submit"
-          className="w-full"
+          className="w-full submit-button bg-primary hover:bg-primary/90"
         >
           Check Eligibility
         </Button>
